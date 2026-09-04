@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>支出登録</title>
+</head>
+<body>
+<h1 th:text="${transaction.id}==null ? '支出登録' : '支出編集'"></h1>
+<a th:href="@{/transactions}">戻る</a>
+
+<form th:action="${transaction.id} == null ? @{/transactions}
+                 : @{/transactions/{id}(id=${transaction.id})}"
+      th:object="${transaction}" method="post">
+
+    <div>
+        <label>金額</label>
+        <input type="number" th:field="*{amount}">
+        <span th:if="${#fields.hasErrors('amount')}"
+              th:errors="*{amount}" style="color:red"> </span>
+        <!--#fieldsはThymeleafが要した検証へのアクセス手段-->
+        <!--Entityに書いたエラー内容が出る-->
+    </div>
+
+    <div>
+        <label>日時</label>
+        <input type="datetime-local" th:field="*{date}">
+        <span th:if="${#fields.hasErrors('date')}"
+              th:errors="*{date}" style="color:red"></span><!--Entityに書いたエラー内容が出る-->
+    </div>
+
+    <div>
+        <label>種類</label>
+        <select th:field="*{type}">
+            <option value="expense">支出</option>
+            <option value="income">収入</option>
+        </select>
+        <span th:if="${#fields.hasErrors('type')}"
+              th:errors="*{type}" style="color:red"></span><!--Entityに書いたエラー内容が出る-->
+    </div>
+
+    <div>
+        <label>カテゴリ</label>
+        <select th:field="*{category}">
+            <option th:each="c:${categories}"
+                    th:value="${c.id}"
+                    th:text="${c.name}">
+            </option>
+        </select>
+        <span th:if="${#fields.hasErrors('category')}"
+              th:errors="*{category}" style="color:red"></span><!--Entityに書いたエラー内容が出る-->
+    </div>
+
+    <div>
+        <input type="submit" value="登録">
+    </div>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>支出一覧</title>
+</head>
+<body>
+<h1>支出一覧</h1>
+<a th:href="@{/transactions/new}">＋新規登録</a>
+
+<table border="1">
+    <tr>
+        <th>日付</th>
+        <th>金額</th>
+        <th>種別</th>
+        <th>カテゴリ</th>
+        <th>操作</th>
+    </tr>
+
+    <tr th:each="t:${transactions}">
+        <td th:text="${t.date}"></td>
+        <td th:text="${t.amount}"></td>
+        <td th:text="${t.type == 'expense'} ? '支出' : '収入'"></td>
+        <td th:text="${t.category?.name}"></td>
+        <td><form th:action="@{/transactions/{id}/delete(id=${t.id})}" method="post">
+                <input type="submit" value="削除">
+        </form>
+        </td>
+        <td>
+            <a th:href="@{/transactions/{id}/edit(id=${t.id})}">編集</a>
+        </td>
+    </tr>
+    <tr>
+        <th>収入合計</th>
+        <th>支出合計</th>
+        <th>収支合計</th>
+    </tr>
+    <tr>
+        <td th:text="${income}"></td>
+        <td th:text="${expense}"></td>
+        <td th:text="${income-expense}"></td>
+    </tr>
+</table>
+
+</body>
+</html>
